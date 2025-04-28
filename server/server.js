@@ -11,8 +11,29 @@ import notificationRoutes from './routes/notificationroutes.js';
 const PORT = process.env.PORT || 3006;
 const app = express();
 
+// CORS Configuration
+const allowedOrigins = [
+    'http://localhost:3008',
+    'https://teamtasker.netlify.app',
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true, // Allow cookies and credentials
+};
+
+
 // Middleware
-app.use(cors());
+
+app.use(cors(corsOptions));
+
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);

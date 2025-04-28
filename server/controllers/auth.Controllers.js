@@ -3,32 +3,57 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/generateToken.js';
 
 export const register = async (req, res) => {
-console.log('Register route hit', req.body); // Log the request body
-  const { name, email, password } = req.body;
-  const userExists = await User.findOne({ email });
+  try {
+      const { name, email, password } = req.body;
 
-  if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+      // Check if the user already exists
+      const userExists = await User.findOne({ email });
+      if (userExists) {
+          return res.status(400).json({ message: 'A user with this email already exists. Please use a different email.' });
+      }
+
+      // Validate password strength
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+      if (!passwordRegex.test(password)) {
+          return res.status(400).json({
+              message: 'Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one special character.',
+          });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Assign role (first user becomes admin)
+      const role = (await User.countDocuments()) === 0 ? 'admin' : 'member';
+
+      // Create the user
+      const user = await User.create({ name, email, password: hashedPassword, role });
+
+      res.status(201).json({ message: 'User registered successfully!', token: generateToken(user._id) });
+  } catch (error) {
+      res.status(500).json({ message: 'An error occurred while registering the user.', error: error.message });
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const role = (await User.countDocuments()) === 0 ? 'admin' : 'member';
-
-  const user = await User.create({ name, email, password: hashedPassword, role });
-  res.status(201).json({ token: generateToken(user._id) });
 };
-
 export const login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+    try {
+        const { email, password } = req.body;
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(400).json({ message: 'Invalid credentials' });
-  }
+        // Find the user
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(400).json({ message: 'Invalid email or password. Please try again.' });
+        }
 
-  res.json({ token: generateToken(user._id) });
+        res.json({ message: 'Login successful!', token: generateToken(user._id) });
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while logging in.', error: error.message });
+    }
 };
 
 export const getMe = async (req, res) => {
-  res.json(req.user);
+    try {
+        res.json({ message: 'User details retrieved successfully!', user: req.user });
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while retrieving user details.', error: error.message });
+    }
 };

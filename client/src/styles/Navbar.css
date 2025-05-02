@@ -1,0 +1,98 @@
+/* Navbar Container */
+.navbar {
+  background-color: #213448; /* Dark blue-green */
+  color: #ECEFCA; /* Light cream */
+  padding: 10px 20px;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: #ECEFCA; /* Light cream */
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  color: #ECEFCA; /* Light cream */
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+
+.nav-link.active {
+  background-color: #547792; /* Medium blue-green */
+}
+
+/* Profile Icon */
+.profile-icon {
+  display: flex;
+  align-items: center;
+}
+
+.profile-link {
+  color: #ECEFCA; /* Light cream */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.profile-link:hover {
+  color: #94B4C1; /* Soft blue */
+}
+
+/* Mobile Menu */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #ECEFCA; /* Light cream */
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  background: #213448; /* Dark blue-green */
+}
+
+.mobile-menu .nav-link {
+  color: #ECEFCA; /* Light cream */
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.mobile-menu .nav-link:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+}

@@ -1,0 +1,173 @@
+/* General Layout */
+.projects-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ECEFCA; /* Light cream */
+}
+
+.projects-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+/* Header */
+.projects-header {
+  display: flex;
+  justify-content: space-between; /* Align title and button on the same row */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.projects-header h1 {
+  font-size: 28px;
+  color: #213448; /* Dark blue-green */
+  margin: 0; /* Remove extra margin */
+}
+
+.btn-primary {
+  background-color: #213448; /* Dark blue-green */
+  color: #ECEFCA; /* Light cream */
+  padding: 8px 16px; /* Adjust padding for a smaller button */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: fit-content; /* Ensure the button width adjusts to its content */
+  display: inline-block; /* Prevent it from stretching */
+  text-align: center; /* Center the text inside the button */
+  font-size: 14px; /* Slightly smaller font size */
+  margin-left: auto; /* Push the button to the far right */
+}
+
+.btn-primary:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  gap: 20px;
+}
+
+.project-card {
+  background-color: #94B4C1; /* Soft blue */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card-content h2 {
+  font-size: 20px;
+  color: #213448; /* Dark blue-green */
+  margin-bottom: 10px;
+}
+
+.project-card-content p {
+  font-size: 14px;
+  color: #ECEFCA; /* Light cream */
+  margin-bottom: 10px;
+}
+
+.project-dates p {
+  font-size: 12px;
+  color: #ECEFCA; /* Light cream */
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  background-color: #ECEFCA; /* Light cream */
+  border-radius: 8px;
+  height: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress-bar {
+  background-color: #547792; /* Medium blue-green */
+  height: 100%;
+  border-radius: 8px;
+}
+
+/* Buttons in Cards */
+.project-actions {
+  display: flex;
+  gap: 10px; /* Add gap between buttons */
+}
+
+.btn-secondary {
+  background-color: #94B4C1; /* Soft blue */
+  color: #213448; /* Dark blue-green */
+  /* padding: 8px 16px; */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+
+.btn-danger {
+  background-color: #E63946; /* Red */
+  color: #ECEFCA; /* Light cream */
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #C53030; /* Darker red */
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ECEFCA; /* Light cream */
+  padding: 30px;
+  border-radius: 12px;
+  width: 600px; /* Increased width */
+  max-height: 80vh; /* Limit height */
+  overflow-y: auto; /* Scrollable content */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Fields in Modal */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-content textarea {
+  width: 100%; /* Full width */
+  min-height: 100px; /* Larger height for description */
+  padding: 10px;
+  border: 1px solid #547792; /* Medium blue-green */
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical; /* Allow resizing vertically */
+}
+

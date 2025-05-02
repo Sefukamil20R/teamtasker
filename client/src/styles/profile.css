@@ -1,0 +1,139 @@
+/* General Layout */
+.profile-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ECEFCA; /* Light cream */
+}
+
+.profile-container {
+  max-width: 700px; /* Increased width for a wider layout */
+  width: 100%;
+  margin: 50px auto;
+  text-align: center;
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: #94B4C1; /* Soft blue */
+  padding: 40px; /* Increased padding for better spacing */
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.profile-header {
+  margin-bottom: 30px; /* Increased spacing below the header */
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 20%; /* Adjusted to make the avatar slightly rounded */
+  margin-bottom: 15px;
+  border: 4px solid #ECEFCA; /* Light cream */
+}
+
+.profile-name {
+  font-size: 28px; /* Slightly larger font size */
+  font-weight: bold;
+  color: #213448; /* Dark blue-green */
+  margin-bottom: 5px;
+}
+
+.profile-email {
+  font-size: 18px; /* Slightly larger font size */
+  color: #ECEFCA; /* Light cream */
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+.profile-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #ECEFCA; /* Light cream */
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #547792; /* Medium blue-green */
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.error-text {
+  color: #E63946; /* Red for errors */
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success-message {
+  color: #547792; /* Medium blue-green */
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #213448; /* Dark blue-green */
+  color: #ECEFCA; /* Light cream */
+  padding: 8px 16px; /* Reduced padding for a smaller button */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+  width: auto; /* Minimized button width */
+}
+
+.btn-primary:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+
+.btn-secondary {
+  background-color: #94B4C1; /* Soft blue */
+  color: #213448; /* Dark blue-green */
+  padding: 1px 1px; /* Reduced padding for a smaller button */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #547792; /* Medium blue-green */
+}
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #213448;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

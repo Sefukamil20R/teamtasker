@@ -13,6 +13,7 @@ const app = express();
 
 // CORS Configuration
 const allowedOrigins = [
+    'http://localhost:5173',
     'http://localhost:3008',
     'https://teamtasker.netlify.app',
 ];

@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/confirmation-dialog.css"; // Add custom styles for the dialog
+import "../styles/confirmation-dialog.css"; 
 
 export default function ConfirmationDialog({ message, onConfirm, onCancel }) {
   return (

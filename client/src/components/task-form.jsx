@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // Import useState and useEffect
 
-export default function TaskForm({ onClose, onSubmit, task, projects }) {
+export default function TaskForm({ onClose, onSubmit, task, projects, users }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -76,13 +76,20 @@ export default function TaskForm({ onClose, onSubmit, task, projects }) {
 
       <div className="form-group">
         <label htmlFor="assignedTo">Assigned To</label>
-        <input
+        <select
           id="assignedTo"
           name="assignedTo"
-          type="text"
           value={formData.assignedTo}
           onChange={handleChange}
-        />
+          required
+        >
+          <option value="">Select a user</option>
+          {users.map((user) => (
+            <option key={user._id} value={user._id}>
+              {user.name} ({user.role})
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="form-group">

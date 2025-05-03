@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [progress] = useState(75); // Static progress percentage
+  const [progress] = useState(75); 
 
   return (
     <div className="dashboard-layout">
@@ -33,22 +33,22 @@ export default function Dashboard() {
           <div className="stats-grid">
             <StatCard
               title="Total Projects"
-              value="10" // Static value for now
+              value="3" // 
               icon={<Briefcase />}
             />
             <StatCard
               title="Total Tasks"
-              value="50" // Static value for now
+              value="3" 
               icon={<ListTodo />}
             />
             <StatCard
               title="Completed Tasks"
-              value="30" // Static value for now
+              value="1" 
               icon={<CheckCircle />}
             />
             <StatCard
               title="Pending Tasks"
-              value="20" // Static value for now
+              value="2" 
               icon={<Clock />}
             />
           </div>
@@ -77,11 +77,21 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <ul className="sidebar-menu">
-        <li className="sidebar-item">Dashboard</li>
-        <li className="sidebar-item">Projects</li>
-        <li className="sidebar-item">Tasks</li>
-        <li className="sidebar-item">Notifications</li>
-        <li className="sidebar-item">Settings</li>
+        <li className="sidebar-item">
+          <Link to="/dashboard" className="sidebar-link">Dashboard</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/projects" className="sidebar-link">Projects</Link>
+        </li>
+        <li className="sidebar-item">
+          <Link to="/tasks" className="sidebar-link">Tasks</Link>
+        </li>
+        {/* <li className="sidebar-item">
+          <Link to="/notifications" className="sidebar-link">Notifications</Link>
+        </li> */}
+        <li className="sidebar-item">
+          <Link to="/Profile" className="sidebar-link">Profile</Link>
+        </li>
       </ul>
     </div>
   );

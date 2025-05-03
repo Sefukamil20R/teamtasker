@@ -1,7 +1,6 @@
-/* Navbar Container */
 .navbar {
-  background-color: #213448; /* Dark blue-green */
-  color: #ECEFCA; /* Light cream */
+  background-color: #213448;
+  color: #ECEFCA;
   padding: 10px 20px;
 }
 
@@ -11,22 +10,20 @@
   align-items: center;
 }
 
-/* Logo */
 .logo {
   font-weight: bold;
   font-size: 20px;
   text-decoration: none;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
 }
 
-/* Navigation Links */
 .nav-links {
   display: flex;
   gap: 20px;
 }
 
 .nav-link {
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 6px;
@@ -34,55 +31,52 @@
 }
 
 .nav-link:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792;
 }
 
 .nav-link.active {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792;
 }
 
-/* Profile Icon */
 .profile-icon {
   display: flex;
   align-items: center;
 }
 
 .profile-link {
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .profile-link:hover {
-  color: #94B4C1; /* Soft blue */
+  color: #94B4C1;
 }
 
-/* Mobile Menu */
 .menu-toggle {
   display: none;
   background: none;
   border: none;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
 }
 
 .mobile-menu {
   display: none;
   flex-direction: column;
   padding: 10px;
-  background: #213448; /* Dark blue-green */
+  background: #213448;
 }
 
 .mobile-menu .nav-link {
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
   padding: 10px;
   border-radius: 6px;
 }
 
 .mobile-menu .nav-link:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .nav-links {
     display: none;

@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user profile on app load
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         setUser(user);
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
-        localStorage.removeItem("token"); // Remove invalid token
+        localStorage.removeItem("token"); 
       } finally {
         setLoading(false);
       }

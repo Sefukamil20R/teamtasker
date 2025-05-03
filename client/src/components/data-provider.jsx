@@ -9,28 +9,39 @@ export const DataProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]); 
 
-  // Fetch all projects
   const fetchProjects = async () => {
     try {
       const response = await axios.get("/projects");
-      setProjects(response.data.data); // Set projects from response
+      setProjects(response.data.data); 
     } catch (error) {
       console.error("Failed to fetch projects:", error);
     }
   };
+  
+const fetchUsers = async () => {
+  try {
+    const response = await axios.get("/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token for authorization
+      },
+    });
+    setUsers(response.data.data); // Set users from response
+  } catch (error) {
+    console.error("Failed to fetch users:", error.response?.data || error.message);
+  }
+};
 
-  // Add a new project
   const addProject = async (projectData) => {
     try {
       const response = await axios.post("/projects", projectData);
-      setProjects((prev) => [...prev, response.data.data]); // Add new project to state
+      setProjects((prev) => [...prev, response.data.data]); 
     } catch (error) {
       console.error("Failed to add project:", error);
     }
   };
 
-  // Update an existing project
   const updateProject = async (projectId, projectData) => {
     try {
       const response = await axios.put(`/projects/${projectId}`, projectData);
@@ -38,27 +49,25 @@ export const DataProvider = ({ children }) => {
         prev.map((project) =>
           project._id === projectId ? response.data.data : project
         )
-      ); // Update project in state
+      ); 
     } catch (error) {
       console.error("Failed to update project:", error);
     }
   };
 
-  // Delete a project
   const deleteProject = async (projectId) => {
     try {
       await axios.delete(`/projects/${projectId}`);
-      setProjects((prev) => prev.filter((project) => project._id !== projectId)); // Remove project from state
+      setProjects((prev) => prev.filter((project) => project._id !== projectId)); 
     } catch (error) {
       console.error("Failed to delete project:", error);
     }
   };
 
-  // Fetch all tasks
   const fetchTasks = async () => {
     try {
       const response = await axios.get("/tasks");
-      setTasks(response.data.data); // Set tasks from response
+      setTasks(response.data.data); 
     } catch (error) {
       console.error("Failed to fetch tasks:", error);
     }
@@ -66,16 +75,15 @@ export const DataProvider = ({ children }) => {
 
   const createTask = async (taskData) => {
     try {
-      console.log("Creating task with data:", taskData); // Debugging
+      console.log("Creating task with data:", taskData); 
       const response = await axios.post("/tasks", taskData);
-      console.log("Task created successfully:", response.data); // Debugging
-      setTasks((prev) => [...prev, response.data.data]); // Add new task to state
+      console.log("Task created successfully:", response.data); 
+      setTasks((prev) => [...prev, response.data.data]); 
     } catch (error) {
       console.error("Failed to create task:", error.response?.data || error.message);
     }
   };
 
-  // Update an existing task
   const updateTask = async (taskData) => {
     try {
       const response = await axios.put(`/tasks/${taskData._id}`, taskData);
@@ -83,7 +91,7 @@ export const DataProvider = ({ children }) => {
         prev.map((task) =>
           task._id === taskData._id ? response.data.data : task
         )
-      ); // Update task in state
+      ); 
     } catch (error) {
       console.error("Failed to update task:", error);
     }
@@ -93,7 +101,7 @@ export const DataProvider = ({ children }) => {
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`/tasks/${taskId}`);
-      setTasks((prev) => prev.filter((task) => task._id !== taskId)); // Remove task from state
+      setTasks((prev) => prev.filter((task) => task._id !== taskId)); 
     } catch (error) {
       console.error("Failed to delete task:", error);
     }
@@ -101,7 +109,7 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    Promise.all([fetchProjects(), fetchTasks()]).finally(() => setLoading(false));
+    Promise.all([fetchProjects(), fetchTasks(),fetchUsers()]).finally(() => setLoading(false));
   }, []);
 
   return (

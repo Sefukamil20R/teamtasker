@@ -3,11 +3,11 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #ECEFCA; /* Light cream */
+  background-color: #ECEFCA; 
 }
 
 .profile-container {
-  max-width: 700px; /* Increased width for a wider layout */
+  max-width: 700px; 
   width: 100%;
   margin: 50px auto;
   text-align: center;
@@ -15,35 +15,35 @@
 
 /* Profile Card */
 .profile-card {
-  background-color: #94B4C1; /* Soft blue */
-  padding: 40px; /* Increased padding for better spacing */
+  background-color: #94B4C1; 
+  padding: 40px; 
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .profile-header {
-  margin-bottom: 30px; /* Increased spacing below the header */
+  margin-bottom: 30px; 
 }
 
 /* Avatar */
 .profile-avatar {
   width: 120px;
   height: 120px;
-  border-radius: 20%; /* Adjusted to make the avatar slightly rounded */
+  border-radius: 20%; 
   margin-bottom: 15px;
-  border: 4px solid #ECEFCA; /* Light cream */
+  border: 4px solid #ECEFCA; 
 }
 
 .profile-name {
-  font-size: 28px; /* Slightly larger font size */
+  font-size: 28px; 
   font-weight: bold;
-  color: #213448; /* Dark blue-green */
+  color: #213448; 
   margin-bottom: 5px;
 }
 
 .profile-email {
-  font-size: 18px; /* Slightly larger font size */
-  color: #ECEFCA; /* Light cream */
+  font-size: 18px; 
+  color: #ECEFCA; 
   margin-bottom: 20px;
 }
 
@@ -59,51 +59,51 @@
 .form-group label {
   display: block;
   font-size: 14px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA; 
   margin-bottom: 5px;
 }
 
 .form-group input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #547792; /* Medium blue-green */
+  border: 1px solid #547792; 
   border-radius: 6px;
   font-size: 14px;
 }
 
 .error-text {
-  color: #E63946; /* Red for errors */
+  color: #E63946; 
   font-size: 14px;
   margin-top: 5px;
 }
 
 .success-message {
-  color: #547792; /* Medium blue-green */
+  color: #547792; 
   font-size: 14px;
   margin-bottom: 15px;
 }
 
 /* Buttons */
 .btn-primary {
-  background-color: #213448; /* Dark blue-green */
-  color: #ECEFCA; /* Light cream */
-  padding: 8px 16px; /* Reduced padding for a smaller button */
+  background-color: #213448; 
+  color: #ECEFCA; 
+  padding: 8px 16px; 
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-right: 10px;
-  width: auto; /* Minimized button width */
+  width: auto; 
 }
 
 .btn-primary:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792; 
 }
 
 .btn-secondary {
-  background-color: #94B4C1; /* Soft blue */
-  color: #213448; /* Dark blue-green */
-  padding: 1px 1px; /* Reduced padding for a smaller button */
+  background-color: #94B4C1; 
+  color: #213448; 
+  padding: 1px 1px; 
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -111,7 +111,7 @@
 }
 
 .btn-secondary:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792; 
 }
 .loading-container {
   display: flex;

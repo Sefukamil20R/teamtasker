@@ -1,13 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, getUserProfile } from "../../service/auth-services";
 import "../../styles/auth.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState(""); // For success or error messages
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getUserProfile()
+        .then(({ user }) => {
+          if (user.role === "admin") {
+            navigate("/dashboard");
+          } else {
+            navigate("/profile");
+          }
+        })
+        .catch(() => {
+          // Handle invalid or expired token
+          localStorage.removeItem("token");
+        });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,25 +36,31 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     try {
-      const { token } = await loginUser(formData); // Call the login API
-      localStorage.setItem("token", token); // Store the token in localStorage
-      console.log("Token stored in localStorage:", localStorage.getItem("token")); // Debugging
-  
-      // Fetch the user's profile to determine their role
+      // Login and store token
+      const { token } = await loginUser(formData);
+      localStorage.setItem("token", token);
+      console.log("Token stored in localStorage:", localStorage.getItem("token"));
+
+      // Fetch user profile
       const { user } = await getUserProfile();
-      console.log("User role:", user.role); // Debugging
-  
-      setMessage("Login successful! Redirecting...");
-      setTimeout(() => {
-        if (user.role === "admin") {
-          navigate("/dashboard"); // Redirect admin to the dashboard
-        } else {
-          navigate("/profile"); // Redirect member to the profile page
-        }
-      }, 1000);
+      console.log("User role:", user.role);
+
+      setMessage("Login successful");
+
+      // Navigate based on user role
+      if (user.role === "admin") {
+        console.log("Navigating to Dashboard...");
+        navigate("/dashboard");
+      } else {
+        console.log("Navigating to Profile...");
+        navigate("/profile");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -76,11 +102,13 @@ const Login = () => {
               <a href="/forgot-password" className="link-primary">Forgot password?</a>
             </div>
 
-            <button type="submit" className="btn-primary">Login</button>
+            <button type="submit" className="btn-primary" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
           </form>
 
-          {message && <p className="success">{message}</p>} {/* Display success message */}
-          {error && <p className="error">{error}</p>} {/* Display error message */}
+          {message && <p className="success">{message}</p>}
+          {error && <p className="error">{error}</p>}
 
           <p className="form-switch">
             Don't have an account? <a href="/signup">Sign up</a>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getUserProfile } from "../service/auth-services"; // Import the API call
-import Navbar from "../components/Navbar"; // Import Navbar
-import "../styles/profile.css"; // Import custom styles
+import { getUserProfile } from "../service/auth-services"; 
+import Navbar from "../components/Navbar"; 
+import "../styles/profile.css"; 
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -11,7 +11,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { user } = await getUserProfile(); // Fetch user profile
+        const { user } = await getUserProfile(); 
         setUser(user);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch user profile");

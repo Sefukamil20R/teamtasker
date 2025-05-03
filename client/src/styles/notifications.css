@@ -1,14 +1,14 @@
 /* General Styles */
 .notifications-container {
   padding: 20px;
-  background-color: #ECEFCA; /* Light cream */
-  min-height: calc(100vh - 120px); /* Adjust for Navbar and Footer */
+  background-color: #ECEFCA; 
+  min-height: calc(100vh - 120px); 
 }
 
 .notifications-title {
   font-size: 24px;
   font-weight: bold;
-  color: #213448; /* Dark blue-green */
+  color: #213448; 
   margin-bottom: 20px;
   text-align: center;
 }
@@ -16,7 +16,7 @@
 .no-notifications {
   text-align: center;
   font-size: 16px;
-  color: #547792; /* Medium blue-green */
+  color: #547792; 
 }
 
 /* Notifications List */
@@ -40,7 +40,7 @@
 }
 
 .notification-item.read {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792; 
 }
 
 .notification-content {
@@ -49,7 +49,7 @@
 
 .notification-date {
   font-size: 12px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA; 
   margin-top: 5px;
   display: block;
 }
@@ -63,17 +63,17 @@
 .btn-delete {
   background: none;
   border: none;
-  color: black; /* Light cream */
+  color: black; 
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .btn-mark-read:hover {
-  color:green; /* Soft blue */
+  color:green; 
 }
 
 .btn-delete:hover {
-  color: #E63946; /* Red for delete */
+  color: #E63946; 
 }
 
 /* Loading Spinner */
@@ -87,12 +87,79 @@
 .spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #94B4C1; /* Soft blue */
-  border-top-color: #547792; /* Medium blue-green */
+  border: 4px solid #94B4C1; 
+  border-top-color: #547792; 
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+.notifications-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
+.notifications-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #213448;
+}
+
+.notifications-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: background-color 0.3s;
+}
+
+.notification-item.unread {
+  background-color: #f3f4f6;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-content p {
+  margin: 0;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+.notification-date {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-mark-read,
+.btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1e40af;
+  transition: color 0.3s;
+}
+
+.btn-mark-read:hover,
+.btn-delete:hover {
+  color: #3b82f6;
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);

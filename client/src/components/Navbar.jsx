@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, User } from "lucide-react";
-import "../styles/navbar.css"; // Import the custom CSS file
+import "../styles/navbar.css"; 
 
 export default function Navbar() {
   const location = useLocation();
@@ -11,7 +11,7 @@ export default function Navbar() {
     { name: "Dashboard", href: "/dashboard" },
     { name: "Projects", href: "/projects" },
     { name: "Tasks", href: "/tasks" },
-    { name: "Notifications", href: "/notifications" },
+    // { name: "Notifications", href: "/notifications" },
   ];
 
   const isActive = (path) => location.pathname === path;

@@ -1,22 +1,19 @@
-/* General Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background-color: #ECEFCA; /* Light cream */
-  color: #213448; /* Dark blue-green */
+  background-color: #ECEFCA;
+  color: #213448;
 }
 
-/* Dashboard Layout */
 .dashboard-layout {
   display: flex;
-  flex-direction: column; /* Stack navigation and main content */
+  flex-direction: column;
   height: 100vh;
 }
 
-/* Navbar */
 .navbar {
-  background-color: #213448; /* Dark blue-green */
-  color: #ECEFCA; /* Light cream */
+  background-color: #213448;
+  color: #ECEFCA;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -31,22 +28,20 @@ body {
   width: 100%;
 }
 
-/* Dashboard Content */
 .dashboard-content {
   display: flex;
   flex: 1;
-  height: calc(100vh - 60px); /* Subtract navbar height */
+  height: calc(100vh - 60px);
 }
 
-/* Sidebar */
 .sidebar {
   width: 250px;
-  background-color: #547792; /* Medium blue-green */
-  color: #ECEFCA; /* Light cream */
+  background-color: #547792;
+  color: #ECEFCA;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full vertical height */
+  height: 100%;
 }
 
 .sidebar-menu {
@@ -63,21 +58,33 @@ body {
 }
 
 .sidebar-item:hover {
-  background-color: #94B4C1; /* Soft blue */
+  background-color: #94B4C1;
   border-radius: 4px;
   padding-left: 10px;
 }
 
-/* Main Content */
+.sidebar-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 10px 0;
+  transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.sidebar-link:hover {
+  background-color: #94B4C1;
+  border-radius: 4px;
+  padding-left: 10px;
+}
+
 .dashboard-main {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
 
-/* Welcome Section */
 .welcome-card {
-  background-color: #ECEFCA; /* Light cream */
+  background-color: #ECEFCA;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -88,18 +95,17 @@ body {
 .welcome-title {
   font-size: 24px;
   font-weight: bold;
-  color: #213448; /* Dark blue-green */
+  color: #213448;
 }
 
 .welcome-subtitle {
   font-size: 16px;
-  color: #547792; /* Medium blue-green */
+  color: #547792;
 }
 
-/* Stats Section */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-bottom: 20px;
 }
@@ -110,12 +116,12 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #94B4C1; /* Soft blue */
+  background-color: #94B4C1;
 }
 
 .stat-icon {
   font-size: 32px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
   margin-right: 20px;
 }
 
@@ -125,18 +131,17 @@ body {
 
 .stat-title {
   font-size: 14px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
 }
 
 .stat-value {
   font-size: 24px;
   font-weight: bold;
-  color: #213448; /* Dark blue-green */
+  color: #213448;
 }
 
-/* Progress Section */
 .progress-card {
-  background-color: #ECEFCA; /* Light cream */
+  background-color: #ECEFCA;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -145,12 +150,12 @@ body {
 .progress-title {
   font-size: 18px;
   font-weight: bold;
-  color: #213448; /* Dark blue-green */
+  color: #213448;
   margin-bottom: 10px;
 }
 
 .progress-bar-container {
-  background-color: #94B4C1; /* Soft blue */
+  background-color: #94B4C1;
   border-radius: 8px;
   height: 16px;
   overflow: hidden;
@@ -158,18 +163,17 @@ body {
 }
 
 .progress-bar {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792;
   height: 100%;
   border-radius: 8px;
 }
 
 .progress-text {
   font-size: 14px;
-  color: #213448; /* Dark blue-green */
+  color: #213448;
   text-align: right;
 }
 
-/* Loading Spinner */
 .loading-container {
   display: flex;
   justify-content: center;
@@ -180,8 +184,8 @@ body {
 .spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #94B4C1; /* Soft blue */
-  border-top-color: #547792; /* Medium blue-green */
+  border: 4px solid #94B4C1;
+  border-top-color: #547792;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

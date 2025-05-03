@@ -4,7 +4,8 @@ import { useAuth } from "../components/auth-provider";
 import { useData } from "../components/data-provider";
 import ProjectForm from "../components/project-form";
 import "../styles/project-detail.css";
-import ConfirmationDialog from "../components/confirmationDialog"; // Import the confirmation dialog component
+import ConfirmationDialog from "../components/confirmationDialog";
+import axios from "../utils/axios";
 
 export default function ProjectDetail() {
   const { id } = useParams();
@@ -12,22 +13,43 @@ export default function ProjectDetail() {
   const { user } = useAuth();
   const { projects, deleteProject, loading } = useData();
   const [project, setProject] = useState(null);
+  const [progress, setProgress] = useState(0); // State to store progress
   const [showProjectForm, setShowProjectForm] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false); // State for confirmation dialog
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     if (!loading) {
-      const foundProject = projects.find((p) => p._id === id); // Match by _id
+      const foundProject = projects.find((p) => p._id === id);
       if (foundProject) {
         setProject(foundProject);
       } else {
-        navigate("/projects"); // Redirect if project not found
+        navigate("/projects");
       }
     }
   }, [id, projects, loading, navigate]);
 
+  // Fetch project progress
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        const response = await axios.get(`/projects/${id}/progress`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setProgress(parseFloat(response.data.progress)); // Parse progress as a float
+      } catch (error) {
+        console.error("Failed to fetch project progress:", error.response?.data || error.message);
+      }
+    };
+
+    if (id) {
+      fetchProgress();
+    }
+  }, [id]);
+
   const handleDeleteProject = () => {
-    setShowConfirmation(true); // Show the confirmation dialog
+    setShowConfirmation(true);
   };
 
   const confirmDelete = () => {
@@ -79,9 +101,9 @@ export default function ProjectDetail() {
         </div>
 
         <div className="progress-bar-container">
-          <div className="progress-bar" style={{ width: `${project.progress || 0}%` }}></div>
+          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         </div>
-        <p className="progress-text">{project.progress || 0}% Complete</p>
+        <p className="progress-text">{progress.toFixed(2)}% Complete</p>
 
         <div className="team-members">
           <h3>Team Members</h3>

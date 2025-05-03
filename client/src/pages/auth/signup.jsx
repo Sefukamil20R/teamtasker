@@ -5,7 +5,7 @@ import "../../styles/auth.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
-  const [message, setMessage] = useState(""); // For success or error messages
+  const [message, setMessage] = useState(""); 
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -17,9 +17,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser(formData); // Call the register API
-      setMessage("Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 2000); // Redirect to login after 2 seconds
+      await registerUser(formData); 
+      setMessage("Registration successful!");
+      setTimeout(() => navigate("/login"), 2000); 
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }
@@ -73,8 +73,8 @@ const Signup = () => {
             <button type="submit" className="btn-primary">Sign up</button>
           </form>
 
-          {message && <p className="success">{message}</p>} {/* Display success message */}
-          {error && <p className="error">{error}</p>} {/* Display error message */}
+          {message && <p className="success">{message}</p>} 
+          {error && <p className="error">{error}</p>} 
 
           <p className="form-switch">
             Already have an account? <a href="/login">Back to login</a>

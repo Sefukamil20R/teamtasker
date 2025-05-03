@@ -1,42 +1,88 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../components/auth-provider";
 import { useData } from "../components/data-provider";
 import TaskForm from "../components/task-form";
 import Navbar from "../components/Navbar";
+import axios from "../utils/axios";
 import "../styles/tasks.css";
+import { sendNotification } from "../utils/sendNotification";
 
 export default function Tasks() {
   const { user } = useAuth();
-  const { tasks, projects, createTask, updateTask, deleteTask, loading } = useData();
+  const { tasks, projects, createTask, updateTask, loading } = useData();
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [usersLoading, setUsersLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); 
 
-  const handleEdit = (task) => {
-    setEditingTask(task);
-    setShowForm(true);
-  };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      if (user?.role === "admin") {
+        setUsersLoading(true);
+        try {
+          const response = await axios.get("/users", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          setUsers(response.data.data);
+        } catch (error) {
+          console.error("Failed to fetch users:", error.response?.data || error.message);
+        } finally {
+          setUsersLoading(false);
+        }
+      }
+    };
 
-  const handleDelete = (taskId) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      deleteTask(taskId);
+    fetchUsers();
+  }, [user]);
+
+  // Check if editingTask is passed via state and open the modal
+  useEffect(() => {
+    if (location.state?.editingTask) {
+      setEditingTask(location.state.editingTask); 
+      setShowForm(true); 
     }
-  };
+  }, [location.state]);
 
   const closeForm = () => {
     setShowForm(false);
     setEditingTask(null);
   };
 
-  const handleFormSubmit = (taskData) => {
-    console.log("Submitting task:", taskData); // Debugging
-    if (editingTask) {
-      updateTask(taskData);
-    } else {
-      createTask(taskData);
+  const handleFormSubmit = async (taskData) => {
+    try {
+      if (editingTask) {
+        // Update task logic
+        await updateTask(taskData);
+
+        // Send notification to the assigned user if the task is updated
+        if (taskData.assignedTo) {
+          await sendNotification(
+            taskData.assignedTo,
+            `The task "${taskData.title}" has been updated.`
+          );
+        }
+      } else {
+        // Create task logic
+        await createTask(taskData);
+
+        // Send notification to the assigned user if the task is created
+        if (taskData.assignedTo) {
+          await sendNotification(
+            taskData.assignedTo,
+            `You have been assigned a new task: "${taskData.title}".`
+          );
+        }
+      }
+
+      closeForm(); // Close the form after submission
+    } catch (error) {
+      console.error("Failed to handle task submission:", error.response?.data || error.message);
     }
-    closeForm();
   };
 
   const getProjectTitle = (projectId) => {
@@ -44,7 +90,7 @@ export default function Tasks() {
     return project ? project.title : "Unknown Project";
   };
 
-  if (loading) {
+  if (loading || usersLoading) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
@@ -52,13 +98,16 @@ export default function Tasks() {
     );
   }
 
+  // Debugging the tasks array
+  console.log("Tasks Array:", tasks);
+
   return (
     <div className="tasks-layout">
       <Navbar />
 
       <div className="tasks-container">
         <div className="tasks-header">
-          <h1>Tasks</h1>
+          <h1 className="text-2xl font-bold text-primary mb-4">Tasks</h1>
           {user?.role === "admin" && (
             <button onClick={() => setShowForm(true)} className="btn-primary">
               Add Task
@@ -74,6 +123,7 @@ export default function Tasks() {
                 onSubmit={handleFormSubmit}
                 task={editingTask}
                 projects={projects}
+                users={users}
               />
             </div>
           </div>
@@ -82,91 +132,26 @@ export default function Tasks() {
         {tasks.length === 0 ? (
           <div className="empty-tasks">
             <p>No tasks found</p>
-            {user?.role === "admin" && (
-              <button onClick={() => setShowForm(true)} className="btn-primary">
-                Create Your First Task
-              </button>
-            )}
           </div>
         ) : (
-          <div className="tasks-table-container">
-            <table className="tasks-table">
-              <thead>
-                <tr>
-                  <th>Task</th>
-                  <th>Project</th>
-                  <th>Assigned To</th>
-                  <th>Deadline</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task) => (
-                  <tr
-                    key={task._id}
-                    onClick={() => navigate(`/tasks/${task._id}`)} // Navigate to task details page
-                    className="clickable-row"
-                  >
-                    <td>
-                      <div className="task-title">{task.title}</div>
-                      <div className="task-description">{task.description}</div>
-                    </td>
-                    <td>{getProjectTitle(task.project)}</td>
-                    <td>
-                      {task.assignedTo ? (
-                        <span>{task.assignedTo.name}</span>
-                      ) : (
-                        <span>Unassigned</span>
-                      )}
-                    </td>
-                    <td>{new Date(task.deadline).toLocaleDateString()}</td>
-                    <td>
-                      {user?.role === "admin" ? (
-                        <select
-                          value={task.status}
-                          onChange={(e) =>
-                            updateTask({ ...task, status: e.target.value })
-                          }
-                        >
-                          <option value="To Do">To Do</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Completed">Completed</option>
-                        </select>
-                      ) : (
-                        <span className={`status-badge ${task.status}`}>
-                          {task.status}
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      {user?.role === "admin" && (
-                        <div className="task-actions">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent row click
-                              handleEdit(task);
-                            }}
-                            className="btn-secondary"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent row click
-                              handleDelete(task._id);
-                            }}
-                            className="btn-danger"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="projects-grid">
+            {tasks.map((task) => {
+              // Debugging each task
+              console.log("Task:", task);
+
+              return (
+                <div
+                  key={task._id}
+                  className="project-card"
+                  onClick={() => navigate(`/tasks/${task._id}`)}
+                >
+                  <div className="project-card-content">
+                    <h2>{task.title}</h2>
+                    <p><strong>Project:</strong> {getProjectTitle(task.project)}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

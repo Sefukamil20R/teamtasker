@@ -67,6 +67,14 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <TaskDetail />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
           <Route path="*" element={<div>404 - Page Not Found</div>} /> {/* Fallback for undefined routes */}
         </Routes>

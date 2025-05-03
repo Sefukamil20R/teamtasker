@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #ECEFCA; /* Light cream */
+  background-color: #ECEFCA; 
 }
 
 .projects-container {
@@ -14,44 +14,44 @@
 /* Header */
 .projects-header {
   display: flex;
-  justify-content: space-between; /* Align title and button on the same row */
+  justify-content: space-between; 
   align-items: center;
   margin-bottom: 20px;
 }
 
 .projects-header h1 {
   font-size: 28px;
-  color: #213448; /* Dark blue-green */
-  margin: 0; /* Remove extra margin */
+  color: #213448; 
+  margin: 0;
 }
 
 .btn-primary {
-  background-color: #213448; /* Dark blue-green */
-  color: #ECEFCA; /* Light cream */
-  padding: 8px 16px; /* Adjust padding for a smaller button */
+  background-color: #213448; 
+  color: #ECEFCA; 
+  padding: 8px 16px; 
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: fit-content; /* Ensure the button width adjusts to its content */
-  display: inline-block; /* Prevent it from stretching */
-  text-align: center; /* Center the text inside the button */
-  font-size: 14px; /* Slightly smaller font size */
-  margin-left: auto; /* Push the button to the far right */
+  width: fit-content; 
+  display: inline-block; 
+  text-align: center; 
+  font-size: 14px; 
+  margin-left: auto; 
 }
 
 .btn-primary:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792; 
 }
 /* Projects Grid */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
 .project-card {
-  background-color: #94B4C1; /* Soft blue */
+  background-color: #94B4C1;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -66,24 +66,24 @@
 
 .project-card-content h2 {
   font-size: 20px;
-  color: #213448; /* Dark blue-green */
+  color: #213448; 
   margin-bottom: 10px;
 }
 
 .project-card-content p {
   font-size: 14px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA;
   margin-bottom: 10px;
 }
 
 .project-dates p {
   font-size: 12px;
-  color: #ECEFCA; /* Light cream */
+  color: #ECEFCA; 
 }
 
 /* Progress Bar */
 .progress-bar-container {
-  background-color: #ECEFCA; /* Light cream */
+  background-color: #ECEFCA;
   border-radius: 8px;
   height: 10px;
   overflow: hidden;
@@ -91,20 +91,19 @@
 }
 
 .progress-bar {
-  background-color: #547792; /* Medium blue-green */
-  height: 100%;
+  background-color: #547792; 
   border-radius: 8px;
 }
 
 /* Buttons in Cards */
 .project-actions {
   display: flex;
-  gap: 10px; /* Add gap between buttons */
+  gap: 10px; 
 }
 
 .btn-secondary {
   background-color: #94B4C1; /* Soft blue */
-  color: #213448; /* Dark blue-green */
+  color: #213448; 
   /* padding: 8px 16px; */
   border: none;
   border-radius: 6px;
@@ -113,11 +112,11 @@
 }
 
 .btn-secondary:hover {
-  background-color: #547792; /* Medium blue-green */
+  background-color: #547792; 
 }
 
 .btn-danger {
-  background-color: #E63946; /* Red */
+  background-color: #E63946; 
   color: #ECEFCA; /* Light cream */
   padding: 8px 16px;
   border: none;
@@ -148,9 +147,9 @@
   background-color: #ECEFCA; /* Light cream */
   padding: 30px;
   border-radius: 12px;
-  width: 600px; /* Increased width */
-  max-height: 80vh; /* Limit height */
-  overflow-y: auto; /* Scrollable content */
+  width: 600px; 
+  max-height: 80vh; 
+  overflow-y: auto; 
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -163,11 +162,11 @@
 
 .modal-content textarea {
   width: 100%; /* Full width */
-  min-height: 100px; /* Larger height for description */
+  min-height: 100px;
   padding: 10px;
-  border: 1px solid #547792; /* Medium blue-green */
+  border: 1px solid #547792; 
   border-radius: 6px;
   font-size: 14px;
-  resize: vertical; /* Allow resizing vertically */
+  resize: vertical; 
 }
 

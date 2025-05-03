@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../service/auth-services"; // Import the login API
-import "../../styles/auth.css"; // Import the custom CSS file
+import { loginUser, getUserProfile } from "../../service/auth-services";
+import "../../styles/auth.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState(""); // For success or error messages
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -18,8 +19,20 @@ const Login = () => {
     try {
       const { token } = await loginUser(formData); // Call the login API
       localStorage.setItem("token", token); // Store the token in localStorage
-      alert("Login successful!");
-      navigate("/"); // Redirect to the home page or dashboard
+      console.log("Token stored in localStorage:", localStorage.getItem("token")); // Debugging
+  
+      // Fetch the user's profile to determine their role
+      const { user } = await getUserProfile();
+      console.log("User role:", user.role); // Debugging
+  
+      setMessage("Login successful! Redirecting...");
+      setTimeout(() => {
+        if (user.role === "admin") {
+          navigate("/dashboard"); // Redirect admin to the dashboard
+        } else {
+          navigate("/profile"); // Redirect member to the profile page
+        }
+      }, 1000);
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -66,7 +79,8 @@ const Login = () => {
             <button type="submit" className="btn-primary">Login</button>
           </form>
 
-          {error && <p className="error">{error}</p>}
+          {message && <p className="success">{message}</p>} {/* Display success message */}
+          {error && <p className="error">{error}</p>} {/* Display error message */}
 
           <p className="form-switch">
             Don't have an account? <a href="/signup">Sign up</a>

@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to="/unauthorized" />; // Redirect to an unauthorized page if role doesn't match
+    return <Navigate to="/unauthorized" />; // Redirect to unauthorized page if role doesn't match
   }
 
   return children;

@@ -1,94 +1,105 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useData } from "./data-provider"
-import { X } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useData } from "./data-provider";
+import { X } from "lucide-react";
+import axios from "../utils/axios"; // Import axios for API calls
 
 export default function ProjectForm({ onClose, project = null }) {
-  const { addProject, updateProject } = useData()
+  const { addProject, updateProject } = useData();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     startDate: "",
     endDate: "",
-    members: [
-      { id: "1", name: "John Doe", avatar: "/placeholder.svg?height=40&width=40" },
-      { id: "2", name: "Jane Smith", avatar: "/placeholder.svg?height=40&width=40" },
-      { id: "3", name: "Bob Johnson", avatar: "/placeholder.svg?height=40&width=40" },
-    ],
-  })
-  const [errors, setErrors] = useState({})
-  const [selectedMembers, setSelectedMembers] = useState([])
+  });
+  const [errors, setErrors] = useState({});
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [availableUsers, setAvailableUsers] = useState([]); // List of users fetched from the backend
 
+  // Fetch available users from the backend
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/users"); // Replace with your actual endpoint
+        setAvailableUsers(response.data.data); // Assuming the response contains a `data` array
+      } catch (error) {
+        console.error("Failed to fetch users, using fallback user:", error);
+        // Fallback static user
+        setAvailableUsers([
+          { _id: "static-user-1", name: "Fallback User" },
+        ]);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Populate form data if editing a project
   useEffect(() => {
     if (project) {
       setFormData({
-        ...project,
-        startDate: project.startDate,
-        endDate: project.endDate,
-      })
-      setSelectedMembers(project.members.map((m) => m.id))
+        title: project.title,
+        description: project.description,
+        startDate: project.startDate.split("T")[0], // Format date for input
+        endDate: project.endDate.split("T")[0], // Format date for input
+      });
+      setSelectedMembers(project.teamMembers); // Use team member IDs
     }
-  }, [project])
+  }, [project]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const toggleMember = (memberId) => {
     if (selectedMembers.includes(memberId)) {
-      setSelectedMembers(selectedMembers.filter((id) => id !== memberId))
+      setSelectedMembers(selectedMembers.filter((id) => id !== memberId));
     } else {
-      setSelectedMembers([...selectedMembers, memberId])
+      setSelectedMembers([...selectedMembers, memberId]);
     }
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
     // Validation
-    const newErrors = {}
-    if (!formData.title) newErrors.title = "Title is required"
-    if (!formData.description) newErrors.description = "Description is required"
-    if (!formData.startDate) newErrors.startDate = "Start date is required"
-    if (!formData.endDate) newErrors.endDate = "End date is required"
+    const newErrors = {};
+    if (!formData.title) newErrors.title = "Title is required";
+    if (!formData.description) newErrors.description = "Description is required";
+    if (!formData.startDate) newErrors.startDate = "Start date is required";
+    if (!formData.endDate) newErrors.endDate = "End date is required";
     if (formData.startDate && formData.endDate && new Date(formData.startDate) > new Date(formData.endDate)) {
-      newErrors.endDate = "End date must be after start date"
+      newErrors.endDate = "End date must be after start date";
     }
-    if (selectedMembers.length === 0) newErrors.members = "At least one team member is required"
-
+  
+    // Temporarily bypass team member validation
+    // if (selectedMembers.length === 0) newErrors.teamMembers = "At least one team member is required";
+  
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
+      setErrors(newErrors);
+      return;
     }
-
-    // Get selected member objects
-    const members = formData.members.filter((m) => selectedMembers.includes(m.id))
-
+  
+    // Prepare data for API
+    const projectData = {
+      title: formData.title,
+      description: formData.description,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      teamMembers: selectedMembers, // Send selected member IDs
+    };
+  
     if (project) {
       // Update existing project
-      updateProject({
-        ...project,
-        title: formData.title,
-        description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        members,
-      })
+      await updateProject(project._id, projectData);
     } else {
       // Add new project
-      addProject({
-        title: formData.title,
-        description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        members,
-      })
+      await addProject(projectData);
     }
-
-    onClose()
-  }
+  
+    onClose();
+  };
 
   return (
     <div>
@@ -165,26 +176,19 @@ export default function ProjectForm({ onClose, project = null }) {
         <div className="mb-6">
           <label className="block text-sm font-medium mb-1">Team Members</label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {formData.members.map((member) => (
+            {availableUsers.map((user) => (
               <div
-                key={member.id}
+                key={user._id}
                 className={`flex items-center p-2 rounded-md cursor-pointer ${
-                  selectedMembers.includes(member.id) ? "bg-accent text-primary" : "bg-gray-100"
+                  selectedMembers.includes(user._id) ? "bg-accent text-primary" : "bg-gray-100"
                 }`}
-                onClick={() => toggleMember(member.id)}
+                onClick={() => toggleMember(user._id)}
               >
-                <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                  <img
-                    src={member.avatar || "/placeholder.svg"}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span>{member.name}</span>
+                <span>{user.name}</span>
               </div>
             ))}
           </div>
-          {errors.members && <p className="text-red-500 text-xs mt-1">{errors.members}</p>}
+          {errors.teamMembers && <p className="text-red-500 text-xs mt-1">{errors.teamMembers}</p>}
         </div>
 
         <div className="flex justify-end space-x-3">
@@ -201,5 +205,5 @@ export default function ProjectForm({ onClose, project = null }) {
         </div>
       </form>
     </div>
-  )
+  );
 }

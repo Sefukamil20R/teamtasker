@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
         setUser(user);
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
+        localStorage.removeItem("token"); // Remove invalid token
       } finally {
         setLoading(false);
       }

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../service/auth-services"; // Import the register API
-import "../../styles/auth.css"; // Import the custom CSS file
+import { registerUser } from "../../service/auth-services";
+import "../../styles/auth.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [message, setMessage] = useState(""); // For success or error messages
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -16,10 +17,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { token } = await registerUser(formData); // Call the register API
-      localStorage.setItem("token", token); // Store the token in localStorage
-      alert("Registration successful!");
-      navigate("/"); // Redirect to the home page or dashboard
+      await registerUser(formData); // Call the register API
+      setMessage("Registration successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000); // Redirect to login after 2 seconds
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }
@@ -73,7 +73,8 @@ const Signup = () => {
             <button type="submit" className="btn-primary">Sign up</button>
           </form>
 
-          {error && <p className="error">{error}</p>}
+          {message && <p className="success">{message}</p>} {/* Display success message */}
+          {error && <p className="error">{error}</p>} {/* Display error message */}
 
           <p className="form-switch">
             Already have an account? <a href="/login">Back to login</a>

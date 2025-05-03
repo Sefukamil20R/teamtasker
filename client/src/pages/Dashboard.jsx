@@ -1,24 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../components/auth-provider";
-import { useData } from "../components/data-provider";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer"; // Import your Navbar component
+import Footer from "../components/Footer";
 import { Briefcase, CheckCircle, Clock, ListTodo } from "lucide-react";
 import "../styles/dashboard.css";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { getStats, loading } = useData();
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-      </div>
-    );
-  }
-
-  const stats = getStats();
+  const [progress] = useState(75); // Static progress percentage
 
   return (
     <div className="dashboard-layout">
@@ -43,22 +33,22 @@ export default function Dashboard() {
           <div className="stats-grid">
             <StatCard
               title="Total Projects"
-              value={stats.totalProjects}
+              value="10" // Static value for now
               icon={<Briefcase />}
             />
             <StatCard
               title="Total Tasks"
-              value={stats.totalTasks}
+              value="50" // Static value for now
               icon={<ListTodo />}
             />
             <StatCard
               title="Completed Tasks"
-              value={stats.completedTasks}
+              value="30" // Static value for now
               icon={<CheckCircle />}
             />
             <StatCard
               title="Pending Tasks"
-              value={stats.pendingTasks}
+              value="20" // Static value for now
               icon={<Clock />}
             />
           </div>
@@ -69,17 +59,16 @@ export default function Dashboard() {
             <div className="progress-bar-container">
               <div
                 className="progress-bar"
-                style={{ width: `${stats.overallProgress}%` }}
+                style={{ width: `${progress}%` }}
               ></div>
             </div>
-            <p className="progress-text">{stats.overallProgress}% Complete</p>
+            <p className="progress-text">{progress}% Complete</p>
           </div>
-         
         </div>
       </div>
-       {/* footer */}
-       <Footer />
 
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

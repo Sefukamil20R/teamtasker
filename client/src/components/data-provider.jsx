@@ -1,261 +1,124 @@
-"use client"
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "../utils/axios";
 
-import { createContext, useContext, useState, useEffect } from "react"
+const DataContext = createContext();
 
-const DataContext = createContext()
+export const useData = () => useContext(DataContext);
 
-export function DataProvider({ children }) {
-  const [projects, setProjects] = useState([])
-  const [tasks, setTasks] = useState([])
-  const [notifications, setNotifications] = useState([])
-  const [loading, setLoading] = useState(true)
+export const DataProvider = ({ children }) => {
+  const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch all projects
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get("/projects");
+      setProjects(response.data.data); // Set projects from response
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    }
+  };
+
+  // Add a new project
+  const addProject = async (projectData) => {
+    try {
+      const response = await axios.post("/projects", projectData);
+      setProjects((prev) => [...prev, response.data.data]); // Add new project to state
+    } catch (error) {
+      console.error("Failed to add project:", error);
+    }
+  };
+
+  // Update an existing project
+  const updateProject = async (projectId, projectData) => {
+    try {
+      const response = await axios.put(`/projects/${projectId}`, projectData);
+      setProjects((prev) =>
+        prev.map((project) =>
+          project._id === projectId ? response.data.data : project
+        )
+      ); // Update project in state
+    } catch (error) {
+      console.error("Failed to update project:", error);
+    }
+  };
+
+  // Delete a project
+  const deleteProject = async (projectId) => {
+    try {
+      await axios.delete(`/projects/${projectId}`);
+      setProjects((prev) => prev.filter((project) => project._id !== projectId)); // Remove project from state
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
+  };
+
+  // Fetch all tasks
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get("/tasks");
+      setTasks(response.data.data); // Set tasks from response
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+    }
+  };
+
+  const createTask = async (taskData) => {
+    try {
+      console.log("Creating task with data:", taskData); // Debugging
+      const response = await axios.post("/tasks", taskData);
+      console.log("Task created successfully:", response.data); // Debugging
+      setTasks((prev) => [...prev, response.data.data]); // Add new task to state
+    } catch (error) {
+      console.error("Failed to create task:", error.response?.data || error.message);
+    }
+  };
+
+  // Update an existing task
+  const updateTask = async (taskData) => {
+    try {
+      const response = await axios.put(`/tasks/${taskData._id}`, taskData);
+      setTasks((prev) =>
+        prev.map((task) =>
+          task._id === taskData._id ? response.data.data : task
+        )
+      ); // Update task in state
+    } catch (error) {
+      console.error("Failed to update task:", error);
+    }
+  };
+
+  // Delete a task
+  const deleteTask = async (taskId) => {
+    try {
+      await axios.delete(`/tasks/${taskId}`);
+      setTasks((prev) => prev.filter((task) => task._id !== taskId)); // Remove task from state
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  };
 
   useEffect(() => {
-    // Load data from localStorage or initialize with sample data
-    const storedProjects = localStorage.getItem("projects")
-    const storedTasks = localStorage.getItem("tasks")
-    const storedNotifications = localStorage.getItem("notifications")
-
-    if (storedProjects) {
-      setProjects(JSON.parse(storedProjects))
-    } else {
-      // Sample projects
-      const sampleProjects = [
-        {
-          id: "1",
-          title: "Website Redesign",
-          description: "Redesign the company website with modern UI/UX",
-          startDate: "2023-05-01",
-          endDate: "2023-06-15",
-          members: [
-            { id: "1", name: "John Doe", avatar: "/placeholder.svg?height=40&width=40" },
-            { id: "2", name: "Jane Smith", avatar: "/placeholder.svg?height=40&width=40" },
-          ],
-          progress: 75,
-        },
-        {
-          id: "2",
-          title: "Mobile App Development",
-          description: "Develop a mobile app for iOS and Android",
-          startDate: "2023-06-01",
-          endDate: "2023-08-30",
-          members: [
-            { id: "1", name: "John Doe", avatar: "/placeholder.svg?height=40&width=40" },
-            { id: "3", name: "Bob Johnson", avatar: "/placeholder.svg?height=40&width=40" },
-          ],
-          progress: 30,
-        },
-      ]
-      setProjects(sampleProjects)
-      localStorage.setItem("projects", JSON.stringify(sampleProjects))
-    }
-
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks))
-    } else {
-      // Sample tasks
-      const sampleTasks = [
-        {
-          id: "1",
-          title: "Design Homepage Mockup",
-          description: "Create mockup for the new homepage design",
-          projectId: "1",
-          assignedTo: { id: "1", name: "John Doe", avatar: "/placeholder.svg?height=40&width=40" },
-          deadline: "2023-05-15",
-          status: "completed",
-        },
-        {
-          id: "2",
-          title: "Implement Homepage",
-          description: "Implement the homepage based on the approved design",
-          projectId: "1",
-          assignedTo: { id: "2", name: "Jane Smith", avatar: "/placeholder.svg?height=40&width=40" },
-          deadline: "2023-06-01",
-          status: "in-progress",
-        },
-        {
-          id: "3",
-          title: "App Wireframes",
-          description: "Create wireframes for the mobile app",
-          projectId: "2",
-          assignedTo: { id: "3", name: "Bob Johnson", avatar: "/placeholder.svg?height=40&width=40" },
-          deadline: "2023-06-15",
-          status: "pending",
-        },
-      ]
-      setTasks(sampleTasks)
-      localStorage.setItem("tasks", JSON.stringify(sampleTasks))
-    }
-
-    if (storedNotifications) {
-      setNotifications(JSON.parse(storedNotifications))
-    } else {
-      // Sample notifications
-      const sampleNotifications = [
-        {
-          id: "1",
-          message: "John Doe assigned you a new task: Implement Homepage",
-          read: false,
-          date: "2023-05-10T10:30:00",
-        },
-        {
-          id: "2",
-          message: 'Project "Website Redesign" deadline is approaching',
-          read: true,
-          date: "2023-05-08T14:15:00",
-        },
-        {
-          id: "3",
-          message: "Bob Johnson completed task: App Wireframes",
-          read: false,
-          date: "2023-05-07T09:45:00",
-        },
-      ]
-      setNotifications(sampleNotifications)
-      localStorage.setItem("notifications", JSON.stringify(sampleNotifications))
-    }
-
-    setLoading(false)
-  }, [])
-
-  // Save data to localStorage whenever it changes
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("projects", JSON.stringify(projects))
-      localStorage.setItem("tasks", JSON.stringify(tasks))
-      localStorage.setItem("notifications", JSON.stringify(notifications))
-    }
-  }, [projects, tasks, notifications, loading])
-
-  // Project CRUD operations
-  const addProject = (project) => {
-    const newProject = {
-      ...project,
-      id: Date.now().toString(),
-      progress: 0,
-    }
-    setProjects([...projects, newProject])
-    return newProject
-  }
-
-  const updateProject = (updatedProject) => {
-    setProjects(projects.map((p) => (p.id === updatedProject.id ? updatedProject : p)))
-  }
-
-  const deleteProject = (projectId) => {
-    setProjects(projects.filter((p) => p.id !== projectId))
-    // Also delete associated tasks
-    setTasks(tasks.filter((t) => t.projectId !== projectId))
-  }
-
-  // Task CRUD operations
-  const addTask = (task) => {
-    const newTask = {
-      ...task,
-      id: Date.now().toString(),
-      status: "pending",
-    }
-    setTasks([...tasks, newTask])
-
-    // Update project progress
-    updateProjectProgress(task.projectId)
-
-    return newTask
-  }
-
-  const updateTask = (updatedTask) => {
-    setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)))
-
-    // Update project progress
-    updateProjectProgress(updatedTask.projectId)
-  }
-
-  const deleteTask = (taskId) => {
-    const task = tasks.find((t) => t.id === taskId)
-    setTasks(tasks.filter((t) => t.id !== taskId))
-
-    if (task) {
-      // Update project progress
-      updateProjectProgress(task.projectId)
-    }
-  }
-
-  // Helper function to update project progress based on tasks
-  const updateProjectProgress = (projectId) => {
-    const projectTasks = tasks.filter((t) => t.projectId === projectId)
-
-    if (projectTasks.length === 0) {
-      const project = projects.find((p) => p.id === projectId)
-      if (project) {
-        updateProject({ ...project, progress: 0 })
-      }
-      return
-    }
-
-    const completedTasks = projectTasks.filter((t) => t.status === "completed").length
-    const progress = Math.round((completedTasks / projectTasks.length) * 100)
-
-    const project = projects.find((p) => p.id === projectId)
-    if (project) {
-      updateProject({ ...project, progress })
-    }
-  }
-
-  // Notification operations
-  const addNotification = (notification) => {
-    const newNotification = {
-      ...notification,
-      id: Date.now().toString(),
-      read: false,
-      date: new Date().toISOString(),
-    }
-    setNotifications([newNotification, ...notifications])
-    return newNotification
-  }
-
-  const markNotificationAsRead = (notificationId) => {
-    setNotifications(notifications.map((n) => (n.id === notificationId ? { ...n, read: true } : n)))
-  }
-
-  const deleteNotification = (notificationId) => {
-    setNotifications(notifications.filter((n) => n.id !== notificationId))
-  }
-
-  // Stats for dashboard
-  const getStats = () => {
-    return {
-      totalProjects: projects.length,
-      totalTasks: tasks.length,
-      completedTasks: tasks.filter((t) => t.status === "completed").length,
-      pendingTasks: tasks.filter((t) => t.status !== "completed").length,
-      overallProgress:
-        projects.length > 0 ? Math.round(projects.reduce((sum, p) => sum + p.progress, 0) / projects.length) : 0,
-    }
-  }
+    setLoading(true);
+    Promise.all([fetchProjects(), fetchTasks()]).finally(() => setLoading(false));
+  }, []);
 
   return (
     <DataContext.Provider
       value={{
         projects,
         tasks,
-        notifications,
         loading,
         addProject,
         updateProject,
         deleteProject,
-        addTask,
+        createTask,
         updateTask,
         deleteTask,
-        addNotification,
-        markNotificationAsRead,
-        deleteNotification,
-        getStats,
-        getProjectTasks: (projectId) => tasks.filter((t) => t.projectId === projectId),
       }}
     >
       {children}
     </DataContext.Provider>
-  )
-}
-
-export const useData = () => useContext(DataContext)
+  );
+};

@@ -7,6 +7,7 @@ import authRoutes from './routes/authroutes.js';
 import projectRoutes from './routes/projectroutes.js';
 import taskRoutes from './routes/taskroutes.js';
 import notificationRoutes from './routes/notificationroutes.js';
+import userRoutes from './routes/userroutes.js';
 
 const PORT = process.env.PORT || 3006;
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/users', userRoutes);
 
 connectDB();
 

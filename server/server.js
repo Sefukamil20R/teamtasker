@@ -17,6 +17,8 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3008',
     'https://teamtasker.netlify.app',
+    'https://team-tasker.netlify.app',
+
 ];
 
 const corsOptions = {

@@ -140,7 +140,7 @@ server/
 ├── server.js             # Main server file
 ├── .env                  # Environment variables
 ├── package.json          # Project metadata and dependencies
-└── README.md             # Backend documentation
+
 ```
 
 ---

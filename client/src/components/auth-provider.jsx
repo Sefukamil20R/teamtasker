@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         setUser(user);
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
-        localStorage.removeItem("token"); 
+        localStorage.removeItem("token");
       } finally {
         setLoading(false);
       }
@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Register a new user
   const register = async (userData) => {
     const { token } = await registerUser(userData);
     localStorage.setItem("token", token);
@@ -38,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     setUser(user);
   };
 
-  // Login a user
   const login = async (credentials) => {
     const { token } = await loginUser(credentials);
     localStorage.setItem("token", token);
@@ -46,7 +44,6 @@ export const AuthProvider = ({ children }) => {
     setUser(user);
   };
 
-  // Logout the user
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);

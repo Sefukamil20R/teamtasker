@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, getUserProfile } from "../../service/auth-services";
+import { useAuth } from "../../components/auth-provider";
 import "../../styles/auth.css";
 
 const Login = () => {
+  const { login, user, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Redirect if already logged in
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      getUserProfile()
-        .then(({ user }) => {
-          if (user.role === "admin") {
-            navigate("/dashboard");
-          } else {
-            navigate("/profile");
-          }
-        })
-        .catch(() => {
-          // Handle invalid or expired token
-          localStorage.removeItem("token");
-        });
+    if (user) {
+      if (user.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/profile");
+      }
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,31 +27,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
     try {
-      // Login and store token
-      const { token } = await loginUser(formData);
-      localStorage.setItem("token", token);
-      console.log("Token stored in localStorage:", localStorage.getItem("token"));
-
-      // Fetch user profile
-      const { user } = await getUserProfile();
-      console.log("User role:", user.role);
-
-      setMessage("Login successful");
-
-      // Navigate based on user role
-      if (user.role === "admin") {
-        console.log("Navigating to Dashboard...");
-        navigate("/dashboard");
-      } else {
-        console.log("Navigating to Profile...");
-        navigate("/profile");
-      }
+      await login(formData);  // Use login from context
+      setError(""); // Reset error message on success
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false); // Stop loading
     }
   };
 
@@ -102,12 +73,11 @@ const Login = () => {
               <a href="/forgot-password" className="link-primary">Forgot password?</a>
             </div>
 
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+            <button type="submit" className="btn-primary" disabled={authLoading}>
+              {authLoading ? "Logging in..." : "Login"}
             </button>
           </form>
 
-          {message && <p className="success">{message}</p>}
           {error && <p className="error">{error}</p>}
 
           <p className="form-switch">
